@@ -11,7 +11,7 @@ interface JobListItemProps {
 
 export default function JobListItem({ job }: JobListItemProps) {
   return (
-    <article className="flex gap-3 rounded-lg border p-5 hover:bg-muted/60">
+    <article className="flex gap-3 rounded-md border p-5 hover:bg-muted/60">
       <Image
         src={CompanyLogo || job.companyLogoUrl}
         alt={job.title}

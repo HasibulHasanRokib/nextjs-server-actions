@@ -11,16 +11,30 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "./ui/button";
-import { jobFilterSchema } from "@/lib/validation";
+import { jobFilterSchema, jobFilterValues } from "@/lib/validation";
+import { redirect } from "next/navigation";
+import SubmitBtn from "./SubmitBtn";
 
 const filterJobs = async (formData: FormData) => {
   "use server";
 
   const values = Object.fromEntries(formData.entries());
   const { q, type, location, remote } = jobFilterSchema.parse(values);
+
+  const searchParams = new URLSearchParams({
+    ...(q && { q: q.trim() }),
+    ...(type && { type }),
+    ...(location && { location }),
+    ...(remote && { remote: "true" }),
+  });
+  redirect(`/?${searchParams.toString()}`);
 };
 
-const FilterSidebar = async () => {
+interface SidebarProps {
+  defaultValues: jobFilterValues;
+}
+
+const FilterSidebar = async ({ defaultValues }: SidebarProps) => {
   const locations = (await prisma.job
     .findMany({
       where: { approved: true },
@@ -37,13 +51,18 @@ const FilterSidebar = async () => {
         {/* Search */}
         <div className="space-y-1">
           <Label htmlFor="q">Search</Label>
-          <Input name="q" id="q" placeholder="Title,company, etc." />
+          <Input
+            name="q"
+            id="q"
+            placeholder="Title,company, etc."
+            defaultValue={defaultValues.q}
+          />
         </div>
 
         {/* Type */}
         <div className="space-y-1">
           <Label htmlFor="type">Type</Label>
-          <Select name="type">
+          <Select name="type" defaultValue={defaultValues.type || ""}>
             <SelectTrigger>
               <SelectValue placeholder="All type" />
             </SelectTrigger>
@@ -64,7 +83,7 @@ const FilterSidebar = async () => {
         {/* Location */}
         <div className="space-y-1">
           <Label htmlFor="location">Location</Label>
-          <Select name="location">
+          <Select name="location" defaultValue={defaultValues.location || ""}>
             <SelectTrigger>
               <SelectValue placeholder="All location" />
             </SelectTrigger>
@@ -84,15 +103,14 @@ const FilterSidebar = async () => {
 
         <div className="flex items-center gap-2">
           <input
-            type="radio"
+            type="checkbox"
             name="remote"
             className="scale-150 accent-black"
+            defaultChecked={defaultValues.remote}
           />
           <Label>Remote jobs</Label>
         </div>
-        <Button type="submit" className="w-full">
-          Filter jobs
-        </Button>
+        <SubmitBtn title="Filter jobs"/>
       </form>
     </aside>
   );
