@@ -10,7 +10,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "./ui/button";
 import { jobFilterSchema, jobFilterValues } from "@/lib/validation";
 import { redirect } from "next/navigation";
 import SubmitBtn from "./SubmitBtn";
@@ -20,6 +19,8 @@ const filterJobs = async (formData: FormData) => {
 
   const values = Object.fromEntries(formData.entries());
   const { q, type, location, remote } = jobFilterSchema.parse(values);
+
+
 
   const searchParams = new URLSearchParams({
     ...(q && { q: q.trim() }),
@@ -34,6 +35,8 @@ interface SidebarProps {
   defaultValues: jobFilterValues;
 }
 
+
+
 const FilterSidebar = async ({ defaultValues }: SidebarProps) => {
   const locations = (await prisma.job
     .findMany({
@@ -47,7 +50,8 @@ const FilterSidebar = async ({ defaultValues }: SidebarProps) => {
 
   return (
     <aside className="sticky top-0 h-fit w-full rounded-md border bg-background p-4 md:w-[350px]">
-      <form action={filterJobs} className="space-y-5">
+      <form action={filterJobs} key={JSON.stringify(defaultValues)} className="space-y-5">
+
         {/* Search */}
         <div className="space-y-1">
           <Label htmlFor="q">Search</Label>
@@ -62,7 +66,7 @@ const FilterSidebar = async ({ defaultValues }: SidebarProps) => {
         {/* Type */}
         <div className="space-y-1">
           <Label htmlFor="type">Type</Label>
-          <Select name="type" defaultValue={defaultValues.type || ""}>
+          <Select name="type"defaultValue={ "" || defaultValues.type} >
             <SelectTrigger>
               <SelectValue placeholder="All type" />
             </SelectTrigger>
@@ -83,7 +87,7 @@ const FilterSidebar = async ({ defaultValues }: SidebarProps) => {
         {/* Location */}
         <div className="space-y-1">
           <Label htmlFor="location">Location</Label>
-          <Select name="location" defaultValue={defaultValues.location || ""}>
+          <Select name="location" defaultValue={ "" || defaultValues.location}>
             <SelectTrigger>
               <SelectValue placeholder="All location" />
             </SelectTrigger>

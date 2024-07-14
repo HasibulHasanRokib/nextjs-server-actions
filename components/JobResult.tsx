@@ -48,7 +48,7 @@ export default async function JobResult({
       {jobs.map((job) => {
         return <JobListItem job={job} key={job.id} />;
       })}
-      {jobs.length === 0 && <p className="my-10 text-center">No job found.</p>}
+      {jobs.length === 0 && <p className="my-10 text-center">No jobs found.</p>}
     </div>
   );
 }
