@@ -13,7 +13,7 @@ const companyLogoSchema = z
       "Must be an image file"),
   )
   .refine(
-    (file) => !file || file.size > 1024 * 1024 * 2,
+    (file) => !file || file.size < 1024 * 1024 * 2,
     "File must be less than 2MB ",
   );
 
@@ -29,9 +29,9 @@ const applicationSchema = z
 
 const locationSchema = z
   .object({
-    locationType: requiredString.refine((value) =>
-      locationType.includes(value),
-      "Invalid location type"
+    locationType: requiredString.refine(
+      (value) => locationType.includes(value),
+      "Invalid location type",
     ),
     location: z.string().max(100).optional(),
   })
@@ -55,7 +55,7 @@ export const createJobSchema = z
     companyName: requiredString.max(100),
     salary: numericRequiredString.max(
       9,
-      "Number can't be longer than 99 digits ",
+      "Number can't be longer than 9 digits ",
     ),
     companyLogoUrl: companyLogoSchema,
   })
