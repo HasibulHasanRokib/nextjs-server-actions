@@ -1,6 +1,4 @@
 "use client";
-
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -9,6 +7,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+
 import { Input } from "@/components/ui/input";
 import { createJobSchema, CreateJobValues } from "@/lib/validation";
 import { useForm } from "react-hook-form";
@@ -23,15 +22,52 @@ import {
 import { jobTypes, locationType } from "@/lib/job-types";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import SubmitBtn from "@/components/SubmitBtn";
+import { createJobPost } from "@/app/actions/createJobPost";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { CircleCheckBig, Loader2, OctagonAlert } from "lucide-react";
 
 export default function NewJobForm() {
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const form = useForm<CreateJobValues>({
     resolver: zodResolver(createJobSchema),
   });
 
-  const submit = (values: CreateJobValues) => {
-    console.log(values);
+  const submit = async (values: CreateJobValues) => {
+    setLoading(true);
+    const formData = new FormData();
+    Object.entries(values).forEach(([key, value]) => {
+      if (value) {
+        formData.append(key, value);
+      }
+    });
+    try {
+      await createJobPost(formData);
+      setError("");
+      form.reset({
+        title: "",
+        type: "",
+        companyName: "",
+        companyLogoUrl: undefined,
+        locationType: "",
+        location: "",
+        applicationEmail: "",
+        applicationUrl: "",
+        description: "",
+        salary: "",
+      });
+      setSuccess(
+        "Your job posting has been submitted and is pending for approval",
+      );
+    } catch (error) {
+      setError("Failed to post job.Try again");
+      setSuccess("");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -94,7 +130,7 @@ export default function NewJobForm() {
                 name="companyName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Comapny</FormLabel>
+                    <FormLabel>Company</FormLabel>
                     <FormControl>
                       <Input placeholder="company name" {...field} />
                     </FormControl>
@@ -105,17 +141,16 @@ export default function NewJobForm() {
               <FormField
                 control={form.control}
                 name="companyLogoUrl"
-                render={({ field: { value, ...fieldValues } }) => (
+                render={({ field: { value, ...field } }) => (
                   <FormItem>
                     <FormLabel>Company logo</FormLabel>
                     <FormControl>
                       <Input
                         type="file"
-                        {...fieldValues}
                         accept="image/*"
                         onChange={(e) => {
                           const file = e.target.files?.[0];
-                          fieldValues.onChange(file);
+                          field.onChange(file);
                         }}
                       />
                     </FormControl>
@@ -166,25 +201,28 @@ export default function NewJobForm() {
               />
               <div className="">
                 <Label htmlFor="applicationEmail">How to apply</Label>
-                <div className="flex items-center justify-between gap-2">
+                <div className="flex justify-between gap-2">
                   <FormField
                     control={form.control}
                     name="applicationEmail"
                     render={({ field }) => (
                       <FormItem className="grow">
                         <FormControl>
-                          <Input
-                            id="applicationEmail"
-                            type="email"
-                            placeholder="Email"
-                            {...field}
-                          />
+                          <div className="flex items-center gap-2">
+                            <Input
+                              id="applicationEmail"
+                              type="email"
+                              placeholder="Email"
+                              {...field}
+                            />
+                            <span>or</span>
+                          </div>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                  <p>or</p>
+
                   <FormField
                     control={form.control}
                     name="applicationUrl"
@@ -233,8 +271,30 @@ export default function NewJobForm() {
                   </FormItem>
                 )}
               />
+              {error && (
+                <div className="flex items-center gap-x-2 rounded-md bg-destructive/15 p-3 text-sm text-destructive">
+                  <OctagonAlert />
+                  {error}
+                </div>
+              )}
 
-              <SubmitBtn title="Post job" />
+              {success && (
+                <div className="flex items-center gap-x-2 rounded-md bg-emerald-500/15 p-3 text-sm text-emerald-500">
+                  <CircleCheckBig />
+                  {success}
+                </div>
+              )}
+
+              <Button type="submit" disabled={loading}>
+                {loading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Loading...
+                  </>
+                ) : (
+                  "Post job"
+                )}
+              </Button>
             </form>
           </Form>
         </div>
