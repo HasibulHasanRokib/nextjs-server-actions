@@ -12,13 +12,15 @@ interface JobListItemProps {
 export default function JobListItem({ job }: JobListItemProps) {
   return (
     <article className="flex gap-3 rounded-md border p-5 hover:bg-muted/60">
+      {job.companyLogoUrl ?
       <Image
-        src={job.companyLogoUrl || CompanyLogo}
-        alt={job.title}
-        width={100}
-        height={100}
-        className="self-center rounded-lg"
+      src={job.companyLogoUrl || CompanyLogo}
+      alt={job.title}
+      width={100}
+      height={100}
+      className="self-center rounded-lg"
       />
+       :<div className="w-[100px] h-[100px] flex justify-center items-center font-bold text-3xl"><p>{job.title.slice(0,2).toUpperCase()}</p></div>}
       <div className="flex-grow space-y-3">
         <div>
           <h2 className="text-xl font-medium">{job.title}</h2>

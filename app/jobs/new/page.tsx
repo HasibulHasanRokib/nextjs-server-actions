@@ -1,10 +1,16 @@
-import React from 'react'
-import NewJobForm from './NewJobForm'
+import React from "react";
+import NewJobForm from "./NewJobForm";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
-export default function CreateJob() {
+export default async function CreateJob() {
+  const session = await auth();
+
+  if (!session?.user) redirect("/");
+
   return (
     <div>
-      <NewJobForm/>
+      <NewJobForm />
     </div>
-  )
+  );
 }

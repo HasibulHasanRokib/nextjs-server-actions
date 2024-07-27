@@ -16,7 +16,7 @@ export default function Error({
 
   return (
     <div className="mx-auto flex h-[50vh] max-w-5xl flex-col items-center justify-center gap-4">
-      <h2 className="text-4xl text-center font-extrabold tracking-tight lg:text-5xl">
+      <h2 className="text-2xl text-center font-extrabold tracking-tight">
         Something went wrong!
       </h2>
       <Button variant="destructive" onClick={() => reset()}>

@@ -52,7 +52,7 @@ export default function NewJobForm() {
         type: "",
         companyName: "",
         companyLogoUrl: undefined,
-        locationType: "",
+        locationType:"",
         location: "",
         applicationEmail: "",
         applicationUrl: "",
