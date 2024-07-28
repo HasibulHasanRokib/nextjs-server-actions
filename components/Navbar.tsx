@@ -3,6 +3,7 @@ import Logo from "@/public/images/logo.png";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import { auth, signOut } from "@/auth";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 function SignOut() {
   return (
@@ -36,19 +37,15 @@ export default async function Navbar() {
             </Button>
             <SignOut />
             {session.user.name && session.user.image && (
-              <Image
-                src={session.user.image}
-                alt="User"
-                width={35}
-                height={30}
-                className="rounded-full border object-cover"
-              />
+              <Avatar>
+                <AvatarImage src={session.user.image} alt="avatar" />
+                <AvatarFallback>{session.user.name.slice(0, 2)}</AvatarFallback>
+              </Avatar>
             )}
           </div>
         ) : (
-          <Button>
-            {" "}
-            <Link href={"/api/auth/signin"}>Sign In</Link>
+          <Button variant="outline">
+            <Link href={"/sign-in"}>Sign In</Link>
           </Button>
         )}
       </nav>

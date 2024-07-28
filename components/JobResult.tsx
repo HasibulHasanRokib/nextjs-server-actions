@@ -11,7 +11,6 @@ interface FilterProps {
 export default async function JobResult({
   filterValues: { q, type, location, remote },
 }: FilterProps) {
-  
   const searchString = q
     ?.split(" ")
     .filter((word) => word.length > 0)
@@ -48,9 +47,11 @@ export default async function JobResult({
   return (
     <div className="grow space-y-2">
       {jobs.map((job) => {
-        return<Link key={job.id} href={`/jobs/${job.slug}`}>
-        <JobListItem job={job}  />;
-        </Link> 
+        return (
+          <Link className="block" key={job.id} href={`/jobs/${job.slug}`}>
+            <JobListItem job={job} />
+          </Link>
+        );
       })}
       {jobs.length === 0 && <p className="my-10 text-center">No jobs found.</p>}
     </div>

@@ -72,3 +72,27 @@ export const jobFilterSchema = z.object({
 });
 
 export type jobFilterValues = z.infer<typeof jobFilterSchema>;
+
+export const signInSchema = z.object({
+  email: z.string().email(),
+  password: z
+    .string()
+    .min(4, "Password must be 4 characters.")
+    .max(8, "Maximum 8 characters."),
+});
+
+export type TSignInSchema = z.infer<typeof signInSchema>;
+
+export const SignUpSchema = z.object({
+  userName: z
+    .string()
+    .min(3, "Username must have 3 letters.")
+    .max(20, "Maximum length 20."),
+  email: z.string().email(),
+  password: z
+    .string()
+    .min(4, "Password must be 4 characters.")
+    .max(8, "Maximum 8 characters."),
+});
+
+export type TSignUpSchema = z.infer<typeof SignUpSchema>;
