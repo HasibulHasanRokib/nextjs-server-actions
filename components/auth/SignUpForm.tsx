@@ -12,16 +12,27 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SignUpSchema, TSignUpSchema } from "@/lib/validation";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import GoogleBtn from "../GoogleBtn";
+
 import Link from "next/link";
+import { createUser } from "@/app/actions/authActions";
 
 export default function SignUpForm() {
   const form = useForm<TSignUpSchema>({
     resolver: zodResolver(SignUpSchema),
   });
 
-  const signUp = (values: TSignUpSchema) => {
-    console.log(values);
+  const signUp = async (values: TSignUpSchema) => {
+    const formData = new FormData();
+    Object.entries(values).forEach(([key, value]) => {
+      if (value) {
+        formData.append(key, value);
+      }
+    });
+    try {
+      await createUser(formData);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -81,10 +92,7 @@ export default function SignUpForm() {
             </Button>
           </form>
         </Form>
-        <div className="my-2 text-center">
-          <span>-or-</span>
-        </div>
-        <GoogleBtn />
+
         <div className="my-2">
           <p className="text-sm text-muted-foreground">
             Already have an account.

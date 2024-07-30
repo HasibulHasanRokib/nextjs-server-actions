@@ -40,15 +40,15 @@ const FilterSidebar = async ({ defaultValues }: SidebarProps) => {
       select: { location: true },
       distinct: ["location"],
     })
-    .then((location) =>
-      location.map(({ location }) => location).filter(Boolean),
+    .then((locations) =>
+      locations.map(({ location }) => location).filter(Boolean),
     )) as string[];
 
   return (
     <aside className="sticky top-0 h-fit w-full rounded-md border bg-background p-4 md:w-[350px]">
       <form
         action={filterJobs}
-        // key={JSON.stringify(defaultValues)}
+        key={JSON.stringify(defaultValues)}
         className="space-y-5"
       >
         {/* Search */}
@@ -58,16 +58,14 @@ const FilterSidebar = async ({ defaultValues }: SidebarProps) => {
             name="q"
             id="q"
             placeholder="Title,company, etc."
-            defaultValue={defaultValues.q}
+            defaultValue={""}
           />
         </div>
 
         {/* Type */}
         <div className="space-y-1">
           <Label htmlFor="type">Type</Label>
-          <Select 
-          name="type"
-           defaultValue={ defaultValues.type}>
+          <Select name="type" defaultValue={""}>
             <SelectTrigger>
               <SelectValue placeholder="All type" />
             </SelectTrigger>
@@ -88,8 +86,7 @@ const FilterSidebar = async ({ defaultValues }: SidebarProps) => {
         {/* Location */}
         <div className="space-y-1">
           <Label htmlFor="location">Location</Label>
-          <Select name="location" 
-          defaultValue={ defaultValues.location}>
+          <Select name="location" defaultValue={""}>
             <SelectTrigger>
               <SelectValue placeholder="All location" />
             </SelectTrigger>

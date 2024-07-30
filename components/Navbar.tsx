@@ -22,6 +22,7 @@ function SignOut() {
 
 export default async function Navbar() {
   const session = await auth();
+  console.log(session?.user);
 
   return (
     <header className="border-b shadow-sm">
@@ -36,12 +37,15 @@ export default async function Navbar() {
               <Link href={"/jobs/new"}>Post job</Link>
             </Button>
             <SignOut />
-            {session.user.name && session.user.image && (
-              <Avatar>
-                <AvatarImage src={session.user.image} alt="avatar" />
-                <AvatarFallback>{session.user.name.slice(0, 2)}</AvatarFallback>
-              </Avatar>
-            )}
+            <Avatar>
+              {session.user.image ? (
+                <AvatarImage src={session.user.image} alt="image" />
+              ) : (
+                <AvatarFallback className="bg-orange-500/50">
+                  {session.user.name?.slice(0, 2).toUpperCase()}
+                </AvatarFallback>
+              )}
+            </Avatar>
           </div>
         ) : (
           <Button variant="outline">

@@ -12,16 +12,29 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import GoogleBtn from "../GoogleBtn";
+
 import Link from "next/link";
+import { signIn } from "@/auth";
+import { credentialsSignIn } from "@/app/actions/authActions";
 
 export default function SignInForm() {
   const form = useForm<TSignInSchema>({
     resolver: zodResolver(signInSchema),
   });
 
-  const submit = (values: TSignInSchema) => {
+  const submit = async (values: TSignInSchema) => {
     console.log(values);
+    const formData = new FormData();
+    Object.entries(values).forEach(([key, value]) => {
+      if (values) {
+        formData.append(key, value);
+      }
+    });
+    try {
+      await credentialsSignIn(formData);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -68,10 +81,7 @@ export default function SignInForm() {
             </Button>
           </form>
         </Form>
-        <div className="my-2 text-center">
-          <span>-or-</span>
-        </div>
-        <GoogleBtn />
+
         <div className="my-2">
           <p className="text-sm text-muted-foreground">
             Dont have any account.
