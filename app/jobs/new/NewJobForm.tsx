@@ -22,10 +22,10 @@ import {
 import { jobTypes, locationType } from "@/lib/job-types";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { createJobPost } from "@/app/actions/createJobPost";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { CircleCheckBig, Loader2, OctagonAlert } from "lucide-react";
+import { createJobPost } from "@/actions/createJobPost";
 
 export default function NewJobForm() {
   const [error, setError] = useState("");
@@ -34,6 +34,17 @@ export default function NewJobForm() {
 
   const form = useForm<CreateJobValues>({
     resolver: zodResolver(createJobSchema),
+    defaultValues: {
+      title: "",
+      locationType: "",
+      location: "",
+      description: "",
+      salary: "",
+      companyName: "",
+      applicationEmail: "",
+      applicationUrl: "",
+      companyLogoUrl: undefined,
+    },
   });
 
   const submit = async (values: CreateJobValues) => {
@@ -47,21 +58,11 @@ export default function NewJobForm() {
     try {
       await createJobPost(formData);
       setError("");
-      form.reset({
-        title: "",
-        type: "",
-        companyName: "",
-        companyLogoUrl: undefined,
-        locationType:"",
-        location: "",
-        applicationEmail: "",
-        applicationUrl: "",
-        description: "",
-        salary: "",
-      });
       setSuccess(
-        "Your job posting has been submitted and is pending for approval",
+        "Your job posting has been submitted and is pending for approval.",
       );
+
+      form.reset();
     } catch (error) {
       setError("Failed to post job.Try again");
       setSuccess("");

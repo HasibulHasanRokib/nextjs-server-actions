@@ -2,27 +2,13 @@ import Link from "next/link";
 import Logo from "@/public/images/logo.png";
 import Image from "next/image";
 import { Button } from "./ui/button";
-import { auth, signOut } from "@/auth";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-function SignOut() {
-  return (
-    <form
-      action={async () => {
-        "use server";
-        await signOut();
-      }}
-    >
-      <Button type="submit" variant={"outline"}>
-        Sign Out
-      </Button>
-    </form>
-  );
-}
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { auth } from "@/auth";
+import SignOutBtn from "./auth/SignOutBtn";
 
 export default async function Navbar() {
   const session = await auth();
-  console.log(session?.user);
 
   return (
     <header className="border-b shadow-sm">
@@ -36,21 +22,14 @@ export default async function Navbar() {
             <Button>
               <Link href={"/jobs/new"}>Post job</Link>
             </Button>
-            <SignOut />
-            <Avatar>
-              {session.user.image ? (
-                <AvatarImage src={session.user.image} alt="image" />
-              ) : (
-                <AvatarFallback className="bg-orange-500/50">
-                  {session.user.name?.slice(0, 2).toUpperCase()}
-                </AvatarFallback>
-              )}
-            </Avatar>
+            <SignOutBtn />
           </div>
         ) : (
-          <Button variant="outline">
-            <Link href={"/sign-in"}>Sign In</Link>
-          </Button>
+          <div className="flex gap-1.5">
+            <Button variant={"outline"}>
+              <Link href={"/sign-in"}>Sign In</Link>
+            </Button>
+          </div>
         )}
       </nav>
     </header>

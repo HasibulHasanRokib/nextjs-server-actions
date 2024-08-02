@@ -84,9 +84,9 @@ export const signInSchema = z.object({
 export type TSignInSchema = z.infer<typeof signInSchema>;
 
 export const SignUpSchema = z.object({
-  userName: z
+  name: z
     .string()
-    .min(3, "Username must have 3 letters.")
+    .min(3, "Name must have 3 letters.")
     .max(20, "Maximum length 20."),
   email: z.string().email(),
   password: z
@@ -96,3 +96,27 @@ export const SignUpSchema = z.object({
 });
 
 export type TSignUpSchema = z.infer<typeof SignUpSchema>;
+
+export const ForgetPasswordSchema = z.object({
+  email: z.string().email(),
+});
+
+export type TForgetPasswordSchema = z.infer<typeof ForgetPasswordSchema>;
+
+export const NewPasswordSchema = z
+  .object({
+    password: z
+      .string()
+      .min(4, "Password must be 4 characters.")
+      .max(8, "Maximum 8 characters."),
+    confirmPassword: z
+      .string()
+      .min(4, "Password must be 4 characters.")
+      .max(8, "Maximum 8 characters."),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Confirm password not match.",
+    path: ["confirmPassword"],
+  });
+
+export type TNewPasswordSchema = z.infer<typeof NewPasswordSchema>;
