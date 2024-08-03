@@ -1,5 +1,6 @@
 import { signOut } from "@/auth";
-import { Button } from "../ui/button";
+import { LogOut } from "lucide-react";
+
 
 export default function SignOutBtn() {
   return (
@@ -9,9 +10,9 @@ export default function SignOutBtn() {
         await signOut();
       }}
     >
-      <Button type="submit" variant="outline">
+      <button type="submit" >
         Sign out
-      </Button>
+      </button>
     </form>
   );
 }

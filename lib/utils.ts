@@ -22,5 +22,5 @@ export function setSlug(str:string){
   return str
   .toLowerCase()
   .replace(/ /g,"-")
-  .replace(/[^\W-]+/g,"");
+  .replace(/[^\w-]+/g,"");
 }

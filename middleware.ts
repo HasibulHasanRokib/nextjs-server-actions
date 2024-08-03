@@ -5,7 +5,7 @@ import {
   authRoutes,
   DEFAULT_LOGIN_REDIRECT,
   publicRoutes,
-} from "./routes";
+} from "./lib/routes";
 import { NextResponse } from "next/server";
 
 export const { auth } = NextAuth(authConfig);
@@ -17,6 +17,7 @@ export default auth((req) => {
   const isApiRoute = nextUrl.pathname.startsWith(apiRoutePrefix);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+
   if (isPublicRoute || isApiRoute) {
     return NextResponse.next();
   }
@@ -36,5 +37,5 @@ export default auth((req) => {
 });
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)","/jobs/:slug"],
 };

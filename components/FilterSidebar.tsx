@@ -19,7 +19,7 @@ const filterJobs = async (formData: FormData) => {
 
   const values = Object.fromEntries(formData.entries());
   const { q, type, location, remote } = jobFilterSchema.parse(values);
-
+  console.log(values);
   const searchParams = new URLSearchParams({
     ...(q && { q: q.trim() }),
     ...(type && { type }),
@@ -48,24 +48,19 @@ const FilterSidebar = async ({ defaultValues }: SidebarProps) => {
     <aside className="sticky top-0 h-fit w-full rounded-md border bg-background p-4 md:w-[350px]">
       <form
         action={filterJobs}
-        key={JSON.stringify(defaultValues)}
+        // key={JSON.stringify(defaultValues)}
         className="space-y-5"
       >
         {/* Search */}
         <div className="space-y-1">
           <Label htmlFor="q">Search</Label>
-          <Input
-            name="q"
-            id="q"
-            placeholder="Title,company, etc."
-            defaultValue={""}
-          />
+          <Input name="q" id="q" placeholder="Title,company, etc." />
         </div>
 
         {/* Type */}
         <div className="space-y-1">
           <Label htmlFor="type">Type</Label>
-          <Select name="type" defaultValue={""}>
+          <Select name="type">
             <SelectTrigger>
               <SelectValue placeholder="All type" />
             </SelectTrigger>
@@ -86,7 +81,7 @@ const FilterSidebar = async ({ defaultValues }: SidebarProps) => {
         {/* Location */}
         <div className="space-y-1">
           <Label htmlFor="location">Location</Label>
-          <Select name="location" defaultValue={""}>
+          <Select name="location">
             <SelectTrigger>
               <SelectValue placeholder="All location" />
             </SelectTrigger>
@@ -109,7 +104,6 @@ const FilterSidebar = async ({ defaultValues }: SidebarProps) => {
             type="checkbox"
             name="remote"
             className="scale-150 accent-black"
-            defaultChecked={defaultValues.remote}
           />
           <Label>Remote jobs</Label>
         </div>

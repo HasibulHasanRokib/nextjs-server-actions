@@ -5,7 +5,7 @@ import { sentEmailWithNodemailer } from "@/lib/auth/sentEmail";
 import { generateVerificationToken } from "@/lib/auth/token";
 import { getUserByEmail } from "@/lib/auth/user";
 import { signInSchema, TSignInSchema } from "@/lib/validation";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { DEFAULT_LOGIN_REDIRECT } from "@/lib/routes";
 import { AuthError } from "next-auth";
 
 export async function login(values: TSignInSchema) {
@@ -24,7 +24,7 @@ export async function login(values: TSignInSchema) {
 
   if (!userExist.emailVerified) {
     const generateToken = await generateVerificationToken(userExist.email);
-    
+
     const emailData = {
       email,
       subject: "Verification email account.",
