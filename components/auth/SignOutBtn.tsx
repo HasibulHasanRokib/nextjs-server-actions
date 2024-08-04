@@ -11,7 +11,7 @@ export default function SignOutBtn() {
       }}
     >
       <button type="submit" >
-        Sign out
+      Sign out
       </button>
     </form>
   );

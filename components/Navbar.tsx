@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -34,7 +35,7 @@ export default async function Navbar() {
 
             <div className="">
               <DropdownMenu>
-                <DropdownMenuTrigger>
+                <DropdownMenuTrigger asChild>
                   <Avatar>
                     <AvatarImage src={session.user.image || ""} alt="avatar" />
                     <AvatarFallback className="bg-sky-400 text-white">
@@ -42,7 +43,7 @@ export default async function Navbar() {
                     </AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent>
+                <DropdownMenuContent align="end" className="space-y-2 p-2">
                   {session.user.role === "ADMIN" ? (
                     <DropdownMenuItem>
                       <Clipboard className="mr-2 h-4 w-4" />
@@ -51,7 +52,12 @@ export default async function Navbar() {
                       </button>
                     </DropdownMenuItem>
                   ) : (
-                    ""
+                    <DropdownMenuItem>
+                      <Clipboard className="mr-2 h-4 w-4" />
+                      <button>
+                        <Link href={"/admin/dashboard"}>My jobs</Link>
+                      </button>
+                    </DropdownMenuItem>
                   )}
                   <DropdownMenuItem>
                     <LogOut className="mr-2 h-4 w-4" />

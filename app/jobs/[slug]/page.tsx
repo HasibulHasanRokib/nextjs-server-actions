@@ -48,12 +48,15 @@ export default async function page({ params: { slug } }: PageProps) {
   return (
     <div className="mx-auto my-10 flex max-w-5xl flex-col items-center gap-5 space-y-6 p-4 md:items-start">
       <JobDetails job={job} />
-      {session?.user && (
+
+      {session?.user ? (
         <Button asChild className="w-40 md:w-fit">
           <a href={applicationLink} target="_blank">
             Apply Now
           </a>
         </Button>
+      ) : (
+        ""
       )}
     </div>
   );
