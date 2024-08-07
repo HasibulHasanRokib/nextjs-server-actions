@@ -1,10 +1,9 @@
 import NextAuth from "next-auth";
 import authConfig from "@/auth.config";
-
+import { UserRole } from "@prisma/client";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import prisma from "./lib/db";
 import { getUserById } from "./lib/auth/user";
-
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   pages: {
@@ -22,19 +21,20 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
   callbacks: {
     async signIn({ user, account }) {
-      
       if (account?.provider !== "credentials") return true;
       const userExist = await getUserById(user.id as string);
       if (!userExist?.emailVerified) return false;
-
       return true;
     },
 
     async session({ token, session }) {
       if (token.role && session.user) {
-        session.user.role = token.role;
+        session.user.role = token.role as UserRole;
       }
 
+      if (token.sub && session.user) {
+        session.user.id = token.sub;
+      }
       return session;
     },
     async jwt({ token }) {
@@ -42,6 +42,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       const userExist = await getUserById(token.sub);
       if (!userExist) return token;
       token.role = userExist.role;
+      token.id = token.sub;
       return token;
     },
   },

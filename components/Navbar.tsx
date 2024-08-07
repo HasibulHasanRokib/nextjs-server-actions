@@ -55,7 +55,7 @@ export default async function Navbar() {
                     <DropdownMenuItem>
                       <Clipboard className="mr-2 h-4 w-4" />
                       <button>
-                        <Link href={"/admin/dashboard"}>My jobs</Link>
+                        <Link href={"/user/profile"}>Profile</Link>
                       </button>
                     </DropdownMenuItem>
                   )}

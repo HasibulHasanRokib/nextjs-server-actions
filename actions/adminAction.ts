@@ -1,5 +1,6 @@
 "use server";
 
+import { currentUser } from "@/lib/auth/currentUser";
 import prisma from "@/lib/db";
 import { del } from "@vercel/blob";
 import { revalidatePath } from "next/cache";
@@ -7,11 +8,15 @@ import { redirect } from "next/navigation";
 
 export const approveJob = async (formData: FormData) => {
   try {
-    const jobId = parseInt(formData.get("jobId") as string);
+    const jobId = formData.get("jobId") as string;
+
     if (!jobId) {
       return { error: "Job id not found!" };
     }
-
+    const user = await currentUser();
+    if (user?.role !== "ADMIN") {
+      return { error: "Only admin can access this!" };
+    }
     const existJob = await prisma.job.findUnique({
       where: { id: jobId },
     });
@@ -35,9 +40,14 @@ export const approveJob = async (formData: FormData) => {
 
 export const deleteJob = async (formData: FormData) => {
   try {
-    const jobId = parseInt(formData.get("jobId") as string);
+    const jobId = formData.get("jobId") as string;
+
     if (!jobId) {
       return { error: "Id not found" };
+    }
+    const user = await currentUser();
+    if (user?.role !== "ADMIN") {
+      return { error: "Only admin can access this!" };
     }
     const existJob = await prisma.job.findUnique({
       where: { id: jobId },

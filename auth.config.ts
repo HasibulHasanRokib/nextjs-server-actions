@@ -16,6 +16,7 @@ export default {
         email: {},
         password: {},
       },
+
       async authorize(credentials) {
         const validateValues = signInSchema.safeParse(credentials);
         if (validateValues.success) {

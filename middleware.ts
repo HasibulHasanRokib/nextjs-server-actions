@@ -29,10 +29,6 @@ export default auth((req) => {
     return NextResponse.next();
   }
 
-  if (!isLoggedIn) {
-    return NextResponse.redirect(new URL("/sign-in", nextUrl));
-  }
-
   return NextResponse.next();
 });
 

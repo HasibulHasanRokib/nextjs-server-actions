@@ -1,7 +1,8 @@
 import AdminBtn from "@/app/(protect)/_components/adminBtn";
+import { auth } from "@/auth";
 import JobDetails from "@/components/JobDetails";
 import prisma from "@/lib/db";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 interface PageParams {
   params: {
@@ -10,6 +11,9 @@ interface PageParams {
 }
 
 export default async function page({ params: { slug } }: PageParams) {
+  const session = await auth();
+  // if (session?.user?.role !== "ADMIN") redirect("/");
+
   const job = await prisma.job.findUnique({
     where: { slug },
   });

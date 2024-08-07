@@ -9,6 +9,7 @@ interface pageProps {
     type?: string;
     location?: string;
     remote?: string;
+    page?: string;
   };
 }
 function getTitle({ q, type, location, remote }: jobFilterValues) {
@@ -38,7 +39,7 @@ export function generateMetadata({
 }
 
 export default async function Home({
-  searchParams: { q, type, location, remote },
+  searchParams: { q, type, location, remote, page },
 }: pageProps) {
   const filterValues: jobFilterValues = {
     q,
@@ -57,7 +58,10 @@ export default async function Home({
       </div>
       <section className="flex flex-col gap-2 md:flex-row">
         <FilterSidebar defaultValues={filterValues} />
-        <JobResult filterValues={filterValues} />
+        <JobResult
+          filterValues={filterValues}
+          page={page ? parseInt(page) : undefined}
+        />
       </section>
     </main>
   );

@@ -1,18 +1,14 @@
 import { signOut } from "@/auth";
-import { LogOut } from "lucide-react";
-
 
 export default function SignOutBtn() {
   return (
     <form
       action={async () => {
         "use server";
-        await signOut();
+        await signOut({ redirectTo: "/sign-in" });
       }}
     >
-      <button type="submit" >
-      Sign out
-      </button>
+      <button type="submit">Sign out</button>
     </form>
   );
 }
