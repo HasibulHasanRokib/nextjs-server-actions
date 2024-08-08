@@ -17,7 +17,7 @@ export default async function JobResult({
 }: FilterProps) {
   const { q, type, location, remote } = filterValues;
 
-  const perPage = 5;
+  const perPage = 4;
 
   const searchString = q
     ?.split(" ")
@@ -60,7 +60,7 @@ export default async function JobResult({
     jobsPromise,
     totalJobPromise,
   ]);
-  const totalPages = Math.floor(totalJobsResult) / perPage;
+  const totalPages = Math.floor(totalJobsResult / perPage);
   return (
     <div className="grow space-y-2">
       {jobs.map((job) => {
@@ -71,13 +71,12 @@ export default async function JobResult({
         );
       })}
       {jobs.length === 0 && <p className="my-10 text-center">No jobs found.</p>}
-      {jobs.length === 1 && (
-        <Pagination
-          currentPage={page}
-          filterValues={filterValues}
-          totalPage={totalPages}
-        />
-      )}
+
+      <Pagination
+        currentPage={page}
+        filterValues={filterValues}
+        totalPage={totalPages}
+      />
     </div>
   );
 }
@@ -107,7 +106,7 @@ function Pagination({
       <Link
         className={cn(
           "flex items-center text-sm",
-          currentPage >= 1 && "invisible",
+          currentPage <= 1 && "invisible",
         )}
         href={generateLink(currentPage - 1)}
       >

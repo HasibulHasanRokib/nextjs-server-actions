@@ -25,14 +25,7 @@ export default async function Profile() {
         </Avatar>
         <div className="flex gap-1.5">
           <p className="text-muted-foreground">{session?.user?.name}</p>
-          <Badge
-            className="px-2"
-            variant={
-              session?.user?.role === "ADMIN" ? "destructive" : "primary"
-            }
-          >
-            {session?.user?.role}
-          </Badge>
+          <Badge className="px-2">{session?.user?.role}</Badge>
         </div>
       </div>
       <div className="grow space-y-2">
