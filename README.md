@@ -1,4 +1,14 @@
 
+<h3>Build with:</h3>
+
+» Next js <br>
+» Prisma <br>
+» Postgresql<br>
+» Auth js <br>
+» Tailwind Css <br>
+» Shadcn ui
+
+<h2>Screenshots of the Project 📸</h2>
 
 ![Screenshot 2024-10-18 214012](https://github.com/user-attachments/assets/0a229693-6fbe-4ebb-96fc-6d05442f5e6a)
 
